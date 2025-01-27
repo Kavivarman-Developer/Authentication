@@ -60,3 +60,16 @@ export const updateUser = asyncHandler(async (req, res) => {
         res.status(404).json( {message: 'User not found!'} );
     }
 });
+
+// Admin middleware
+export const adminMiddleware = asyncHandler(async (req, res, next) => {
+    if(req.user && req.user.role === "admin") {
+        // if user is admin, move to the next middleware / controller
+        next();
+        return;
+    }
+
+    // if not admin, send 403 forbidden ----> terminate the request
+    res.status(403).json( {message: 'Only admins can do this!'} ); 
+})
+
