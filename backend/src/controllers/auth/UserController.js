@@ -83,8 +83,11 @@ export const loginUser = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "User not found, sign up!" });
     }
 
+    //console.log(userExists.password === password);
+
     // Check id the password match the hashed password in the database
     const isMatch = await bcrypt.compare(password, userExists.password);
+    //console.log(isMatch)
 
     if (!isMatch) {
         return res.status(400).json({ message: "Invalid credentails!" });
@@ -92,6 +95,9 @@ export const loginUser = asyncHandler(async (req, res) => {
 
     if (userExists && isMatch) {
         const { _id, name, email, role, photo, bio, isVerified } = userExists;
+
+           // Generate token with user id 
+           const token = generateToken(userExists._id);
 
         // Set the tokrn in the cookie
         res.cookie("token", token, {
@@ -117,4 +123,11 @@ export const loginUser = asyncHandler(async (req, res) => {
         res.status(400).json({message: "Invalid email or password"});
     }
 
+});
+
+
+// Logout user
+export const logoutUser = asyncHandler(async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json( { message: 'User loggrd out' } );
 });
