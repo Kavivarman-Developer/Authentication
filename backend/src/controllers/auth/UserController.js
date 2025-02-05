@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler"
 import User from "../../models/auth/UserMode.js"
 import generateToken from "../../helpers/generateToken.js";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 export const registerUser = asyncHandler(async (req, res) => {
     //res.send("Register User");
@@ -129,7 +130,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // Logout user
 export const logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie('token');
-    res.status(200).json( { message: 'User loggrd out' } );
+    res.status(200).json( { message: 'User logged out' } );
 });
 
 // Get user profile
@@ -141,5 +142,23 @@ export const getUser = asyncHandler(async (req, res) => {
         res.status(200).json(user);
     }else{
         res.status(404).json( {message: 'User not found!'} );
+    }
+});
+
+
+// Login Status
+export const userLoginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+
+    if(!token) {
+        res.status(401).json({message: "Not authorized, please login!"});
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if(decoded) {
+        res.status(200).json(true);
+    }else{
+        res.status(401).json(false);
     }
 });
