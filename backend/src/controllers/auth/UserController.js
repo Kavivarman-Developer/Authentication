@@ -162,3 +162,7 @@ export const userLoginStatus = asyncHandler(async (req, res) => {
         res.status(401).json(false);
     }
 });
+
+
+// Email verification 
+export const verifyEmail = asyncHandler(async (req, res) => {});
