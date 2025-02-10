@@ -19,7 +19,7 @@ export const protect = asyncHandler(async (req, res, next) => {
 
         // Check if user exists
         if(!user) {
-            res.status(404).json( {message: 'User not found!'} );
+           return res.status(404).json( {message: 'User not found!'} );
         }
 
         // Set user details in the request object

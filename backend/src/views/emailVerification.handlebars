@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .color-primary {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .btn-link {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 20px 0;
+            background-color: #007bff;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-link:hover {
+            background-color: #0056b3;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .footer-link {
+            color: #007bff;
+            text-decoration: none;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="color-primary">{{subject}}</h2>
+        <hr />
+        <p>Hello {{name}},</p>
+
+        <p>Please use the link below to verify your account. This link is valid for 24 hours.</p>
+        <a href="{{link}}" class="btn-link">Verify Account</a>
+
+        <hr />
+        <p>Regards,</p>
+        <p><b>AuthStarter</b> Team</p>
+        
+        <div class="footer-text">
+            <p>
+                If you're having trouble clicking the "Verify Account" button, copy
+                and paste the URL below into your web browser:
+                <br />
+                <a href="{{link}}" class="footer-link">{{link}}</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
