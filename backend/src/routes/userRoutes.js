@@ -30,7 +30,7 @@ router.post("/verify-user/:verificationToken", verifyUser);
 router.post("/forgot-password", forgotPassword);
 
 // reset password
-router.post("/reset-password/:resetToken", resetPassword);
+router.post("/reset-password/:resetPasswordToken", resetPassword);
 
 
 
