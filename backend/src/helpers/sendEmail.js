@@ -53,7 +53,7 @@ const sendEmail = async (send_to, send_from, name, subject, template, reply_to, 
             to: send_to,
             replyTo: reply_to,
             subject: subject,
-            template: "emailVerification", // Ensure this matches the filename (e.g., "emailVerification")
+            template: template, // Ensure this matches the filename (e.g., "emailVerification")
             context: {
                 name: name || 'User',
                 link: link,
