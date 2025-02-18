@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.auth-name{
+    height: 100vh;
+    background-color: rgba(248, 212, 218, 0.651);
+}
