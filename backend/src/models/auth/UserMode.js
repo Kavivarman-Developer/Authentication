@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: "no-photo.jpg",
+        default:"https://i.ibb.co/4pDNDk1/avatar.png",
     },
     bio: {
         type: String,
@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["user", "adnim", "creator"],
+        enum: ["user", "admin", "creator"],
         default: "user",
     },
     isVerified: {

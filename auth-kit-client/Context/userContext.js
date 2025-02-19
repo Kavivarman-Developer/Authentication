@@ -1,4 +1,5 @@
 "use client"
+
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, {createContext, useContext, UseContext, useEffect, useState} from "react";
@@ -13,7 +14,7 @@ export const UserContextProvider = ( {children} ) => {
 
     const router = useRouter();
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState('');
     const [userState, setUserState] = useState({
         name: "",
         email: "",
@@ -61,7 +62,7 @@ export const UserContextProvider = ( {children} ) => {
                 withCredentials: true, // send cookies to the server
             });
     
-            // coerce the string  to boolean
+            // coerce the string to boolean
             loggedIn = !!res.data;
             setLoading(false);
     
@@ -75,6 +76,59 @@ export const UserContextProvider = ( {children} ) => {
         //console.log('userlogged status', loggedIn);
         return loggedIn;
     };
+
+    // Get user
+    const getUser = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.get(`${serverUrl}/api/v1/user`, {
+                withCredentials: true,  // send cookies to the server
+            });
+
+            setUser((pre) => {
+                return {
+                    ...pre,
+                    ...res.data,
+                }
+            });
+
+            setLoading(false);
+
+        }catch(error) {
+            console.log('Error getting user details', error);
+            setLoading(false);
+            toast.error(error.response.data.message);
+        }
+    }
+
+
+    // Get user details
+    const updateUser = async (e, data) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const res = await axios.patch(`${serverUrl}/api/v1/user`, data, {
+                withCredentials: true,  // send cookies to the server
+            });
+
+            // Update the state
+            setUser((pre) => {
+                return {
+                    ...pre,
+                    ...res.data,
+                };
+            });
+
+            toast.success('User Updated Succfully');
+            setLoading(false);
+        }catch(error) {
+            console.log('Error updating user details!');
+            toast.error(error.response.data.message);
+        }
+    }
+    
+
 
     // dynamic form handler
     const handleUserInput = (name) => (e) => {
@@ -134,9 +188,19 @@ export const UserContextProvider = ( {children} ) => {
     }
 
     useEffect(() => {
-        userLoginStatus();
-    }, []);
+        const loginStatusGeter = async () => {
+            const isLoggedIn = await userLoginStatus();
+            // console.log('isLoggedIn', isLoggedIn);
+             
+            if(isLoggedIn) {
+                getUser();
+            }
+        };
+        loginStatusGeter();
+    }, [] );
 
+    // console.log('user', user);
+    
 
     return (
         <UserContext.Provider value = {{
@@ -145,6 +209,9 @@ export const UserContextProvider = ( {children} ) => {
             handleUserInput,
             LoginUser,
             logoutUser,
+            userLoginStatus,
+            user,
+            updateUser,
         }} >
             {children}
         </UserContext.Provider>
