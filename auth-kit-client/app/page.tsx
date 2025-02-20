@@ -1,15 +1,16 @@
 "use client";
 
-import { useUserContext } from "@/Context/userContext";
-import useRedirect from "@/hooks/useUserRedirect";
 import { useState } from "react";
+import useRedirect from "@/hooks/useUserRedirect";
+import { useUserContext } from "@/Context/userContext";
+
 
 
 
 export default function Home() {
 
   useRedirect("/login");
-  const {logoutUser, user, handleUserInput, userState, updateUser} = useUserContext();
+  const {logoutUser, user, handleUserInput, userState, updateUser, emailVerification} = useUserContext();
   const {name, photo, isVerified, bio} = user;
 
   // State
@@ -34,7 +35,7 @@ export default function Home() {
         />
 
         {!isVerified && (
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Verified Account</button>
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={emailVerification}>Verified Account</button>
         )}
 
       </div>

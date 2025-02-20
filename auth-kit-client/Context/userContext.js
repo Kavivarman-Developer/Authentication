@@ -69,6 +69,7 @@ export const UserContextProvider = ( {children} ) => {
             if(!loggedIn) {
                 router.push('/login');
             }
+            
         }catch(error) {
             console.log('Error getting user login status', error);
         }
@@ -127,6 +128,75 @@ export const UserContextProvider = ( {children} ) => {
             toast.error(error.response.data.message);
         }
     }
+
+
+    // Verification Email
+    const emailVerification = async () => {
+        setLoading(true);
+
+        try {
+            const res = await axios.post(`${serverUrl}/api/v1/verify-email`, {} , {
+                withCredentials: true,
+            });
+            
+            console.log(res);
+            
+
+            toast.success('Email Verification Send Successfully');
+            setLoading(false);
+
+        }catch(error) {
+            console.log('Error sending email successfully', error);
+            toast.error(error.response.data.message);
+        }
+    }
+
+
+    // Verify user/email
+    const verifyUser = async (token) => {
+        setLoading(true);
+
+        try {
+            const res = await axios.post(`${serverUrl}/api/v1/verify-user/${token}`, {}, {
+                withCredentials: true, // send cookies to the server
+            });
+
+            toast.success('User verification successfully');
+
+            // refresh the user
+            getUser();
+
+            // redirect home page
+            router.push('/');
+
+        }catch(error) {
+            console.log('Error verification user', error);
+            toast.error(error.response.data.message);
+            setLoading(false);
+        }
+    }
+
+
+    // Forgot email password
+    const forgorPasswordEmail = async (email) => {
+        setLoading(true);
+
+        try {
+            const res = await axios.post(`${serverUrl}/api/v1/forgot-password`, {
+                email,
+            }, {
+                withCredentials: true, // send cookies to the server
+            });
+
+            toast.success('Forgot password email send successfully');
+            setLoading(false);
+
+        } catch (error) {
+            console.log('Error sending password email', error);
+            toast.error(error.response.data.message);
+            setLoading(false);
+        }
+    }
     
 
 
@@ -155,6 +225,8 @@ export const UserContextProvider = ( {children} ) => {
 
             toast.success('User logged in successfully');
 
+            getUser();
+
             // clear the form
             setUserState({
                 email: "",
@@ -180,6 +252,13 @@ export const UserContextProvider = ( {children} ) => {
 
             // redirect to the login page
             router.push('/login');
+
+             // clear the form
+             setUserState({
+                email: "",
+                password: "",
+            });
+
 
         }catch(error) {
             console.log('Error logged user', error);
@@ -212,6 +291,9 @@ export const UserContextProvider = ( {children} ) => {
             userLoginStatus,
             user,
             updateUser,
+            emailVerification,
+            verifyUser,
+            forgorPasswordEmail,
         }} >
             {children}
         </UserContext.Provider>
